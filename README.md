@@ -148,27 +148,24 @@ Then added the following lines of code to the file to configure the virtual host
 3. Enable the virtual host with the following command: `sudo a2ensite FlaskApp`
 
 ## Create the .wsgi File
-1. Create the .wsgi File under /var/www/FlaskApp: 
-	
-	```
-	cd /var/www/FlaskApp
-	sudo nano flaskapp.wsgi 
-	```
-2. Add the following lines of code to the flaskapp.wsgi file:
-	
+
+Under /var/www/FlaskApp `sudo nano flaskapp.wsgi`
+
+Then : 
+
 	```
 	#!/usr/bin/python
+	activate_this = '/var/www/FlaskApp/FlaskApp/venv/bin/activate_this.py'
+	exec(compile(open(activate_this, "rb").read(), activate_this, 'exec'))
 	import sys
 	import logging
 	logging.basicConfig(stream=sys.stderr)
 	sys.path.insert(0,"/var/www/FlaskApp/")
-
 	from FlaskApp import app as application
-	application.secret_key = 'Add your secret key'
+	application.secret_key = 'super_secret_key'
+
+	
 	```
 
-## Restart Apache
+THEN Restart Apache
 1. Restart Apache `sudo service apache2 restart `
-
-## References:
-https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
