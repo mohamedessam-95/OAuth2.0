@@ -3,19 +3,26 @@ To visit the webpage hosted on the server go to this url :
 http://ec2-35-178-86-84.eu-west-2.compute.amazonaws.com/
 
 While reviewing use :
+
   Ip Address : 35.178.86.84
+  
   SSH Port : 2200
 
 Concerning the Grader user :
+
   Private key is pasted into Notes to Reviewer along with the passphrase
+  
   public key is stored in the server in grader/home/.ssh/authorized_keys
 
 
 ## Create a new user named grader :
 
 `sudo adduser grader`
+
 `sudo cp /etc/sudoers.d/vagrant /etc/sudoers.d/grader`
+
 `sudo nano /etc/sudoers.d/grader`
+
 changing `vagrant ALL=(ALL:ALL) ALL` into `grader ALL=(ALL:ALL) ALL`
 
 ## Creating key-pairs for the grader user :
@@ -40,8 +47,11 @@ Copied the public key on the local machine to this file and changed the permissi
 ## Configuring the sshd_config :
 
 I typed `sudo vim /etc/ssh/sshd_config`
+
 then : changed Port 22 to Port 2200
+
        changed passwordauthorization to no
+       
        changed permitrootlogin to no
 
 ## Configure the Uncomplicated Firewall (UFW)
@@ -60,43 +70,36 @@ then i selected UTC
 
 ## Installed and configured Apache to serve a Python mod_wsgi application
 Apache `sudo apt-get install apache2`
+
 mod_wsgi `sudo apt-get install python-setuptools libapache2-mod-wsgi`
+
 Apache `sudo service apache2 restart`
 
 ## Install and configure PostgreSQL
-1. Install PostgreSQL `sudo apt-get install postgresql`
-2. Check if no remote connections are allowed `sudo vim /etc/postgresql/9.3/main/pg_hba.conf`
-3. Login as user "postgres" `sudo su - postgres`
-4. Get into postgreSQL shell `psql`
-5. Create a new database named catalog  and create a new user named catalog in postgreSQL shell
+PostgreSQL `sudo apt-get install postgresql`
+
+I checked if no remote connections are allowed `sudo vim /etc/postgresql/9.3/main/pg_hba.conf`
+
+Then used the user "postgres" `sudo su - postgres`
+
+Opened the postgreSQL shell `psql`
+
+Then Created a new database named catalog  and create a new user named catalog in postgreSQL shell
 	
-	```
 	postgres=# CREATE DATABASE catalog;
 	postgres=# CREATE USER catalog;
-	```
-5. Set a password for user catalog
-	
-	```
 	postgres=# ALTER ROLE catalog WITH PASSWORD 'password';
-	```
-6. Give user "catalog" permission to "catalog" application database
-	
-	```
 	postgres=# GRANT ALL PRIVILEGES ON DATABASE catalog TO catalog;
-	```
-7. Quit postgreSQL `postgres=# \q`
-8. Exit from user "postgres" 
-	
-	```
+	postgres=# \q
 	exit
-	```
  
 ## Install git, clone and setup your Catalog App project.
-1. Install Git using `sudo apt-get install git`
-2. Use `cd /var/www` to move to the /var/www directory 
-3. Create the application directory `sudo mkdir FlaskApp`
-4. Move inside this directory using `cd FlaskApp`
-5. Clone the Catalog App to the virtual machine `git clone https://github.com/kongling893/Item_Catalog_UDACITY.git`
+
+Installed Git using `sudo apt-get install git`
+
+In /var/www Create the application directory `sudo mkdir FlaskApp`
+
+Inside /var/www/FlaskApp i cloned my Items_Catalog App `git clone https://github.com/kongling893/Item_Catalog_UDACITY.git`
 6. Rename the project's name `sudo mv ./Item_Catalog_UDACITY ./FlaskApp`
 7. Move to the inner FlaskApp directory using `cd FlaskApp`
 8. Rename `website.py` to `__init__.py` using `sudo mv website.py __init__.py`
