@@ -99,38 +99,51 @@ Installed Git using `sudo apt-get install git`
 
 In /var/www Create the application directory `sudo mkdir FlaskApp`
 
-Inside /var/www/FlaskApp i cloned my Items_Catalog App `git clone https://github.com/kongling893/Item_Catalog_UDACITY.git`
-6. Rename the project's name `sudo mv ./Item_Catalog_UDACITY ./FlaskApp`
-7. Move to the inner FlaskApp directory using `cd FlaskApp`
-8. Rename `website.py` to `__init__.py` using `sudo mv website.py __init__.py`
-9. Edit `database_setup.py`, `website.py` and `functions_helper.py` and change `engine = create_engine('sqlite:///toyshop.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')`
-10. Install pip `sudo apt-get install python-pip`
-11. Use pip to install dependencies `sudo pip install -r requirements.txt`
-12. Install psycopg2 `sudo apt-get -qqy install postgresql python-psycopg2`
-13. Create database schema `sudo python database_setup.py`
+Inside /var/www/FlaskApp i cloned my Items_Catalog App `git clone https://github.com/mohamedessam-95/Items_Catalog.git`
+
+Then i renamed the project's name `sudo mv Items_Catalog FlaskApp`
+
+Inside the project files i renamed `recipes.py` to `__init__.py` using `sudo mv recipes.py __init__.py`
+
+Edited `database_setup.py`, `__init__.py` by changing `engine = create_engine('sqlite:///recipes.db')` to `engine = create_engine('postgresql://catalog:password@localhost/catalog')`
+
+## Deploying the project and Enabling a New Virtual Host
+
+Installed mod_wsgi `sudo apt-get install libapache2-mod-wsgi python-dev` then enabled it `sudo a2enmod wsgi`
+
+I used pip to install dependencies `sudo apt-get install python-pip`
+
+Installed virtual environment `sudo pip install virtualenv`
+
+While inside FlaskApp/FlaskApp `sudo virtualenv venv` then `source venv/bin/activate `to activate the virtual environment
+
+Installed Flask `sudo pip install Flask`
 
 ## Configure and Enable a New Virtual Host
-1. Create FlaskApp.conf to edit: `sudo nano /etc/apache2/sites-available/FlaskApp.conf`
-2. Add the following lines of code to the file to configure the virtual host. 
+
+I created FlaskApp.conf `sudo nano /etc/apache2/sites-available/FlaskApp.conf`
+
+Then added the following lines of code to the file to configure the virtual host. 
 	
 	```
 	<VirtualHost *:80>
-		ServerName 52.24.125.52
-		ServerAdmin qiaowei8993@gmail.com
-		WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
-		<Directory /var/www/FlaskApp/FlaskApp/>
-			Order allow,deny
-			Allow from all
-		</Directory>
-		Alias /static /var/www/FlaskApp/FlaskApp/static
-		<Directory /var/www/FlaskApp/FlaskApp/static/>
-			Order allow,deny
-			Allow from all
-		</Directory>
-		ErrorLog ${APACHE_LOG_DIR}/error.log
-		LogLevel warn
-		CustomLog ${APACHE_LOG_DIR}/access.log combined
+                ServerName 35.178.86.84
+                ServerAdmin doushaman1234@gmail.com
+                WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+                <Directory /var/www/FlaskApp/FlaskApp/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                Alias /static /var/www/FlaskApp/FlaskApp/static
+                <Directory /var/www/FlaskApp/FlaskApp/static/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
 	</VirtualHost>
+
 	```
 3. Enable the virtual host with the following command: `sudo a2ensite FlaskApp`
 
